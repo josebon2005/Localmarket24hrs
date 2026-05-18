@@ -19,37 +19,65 @@
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <p class="text-sm text-gray-500">Usuarios registrados</p>
-                <h3 class="text-3xl font-bold text-gray-800 mt-2">0</h3>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ $totalUsers }}</h3>
                 <p class="text-xs text-gray-400 mt-2">Total de usuarios en la plataforma</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Administradores</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ $totalAdmins }}</h3>
+                <p class="text-xs text-gray-400 mt-2">Usuarios con rol administrador</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Categorías</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ $totalCategories }}</h3>
+                <p class="text-xs text-gray-400 mt-2">Categorías registradas</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Categorías activas</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ $totalActiveCategories }}</h3>
+                <p class="text-xs text-gray-400 mt-2">Categorías disponibles para comercios</p>
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Usuarios baneados</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ $totalBannedUsers }}</h3>
+                <p class="text-xs text-gray-400 mt-2">Usuarios restringidos</p>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <p class="text-sm text-gray-500">Comercios creados</p>
                 <h3 class="text-3xl font-bold text-gray-800 mt-2">0</h3>
-                <p class="text-xs text-gray-400 mt-2">Negocios registrados</p>
+                <p class="text-xs text-gray-400 mt-2">Se conectará cuando creemos comercios</p>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <p class="text-sm text-gray-500">Categorías</p>
+                <p class="text-sm text-gray-500">Productos registrados</p>
                 <h3 class="text-3xl font-bold text-gray-800 mt-2">0</h3>
-                <p class="text-xs text-gray-400 mt-2">Categorías disponibles</p>
+                <p class="text-xs text-gray-400 mt-2">Se conectará cuando creemos productos</p>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <p class="text-sm text-gray-500">Pedidos</p>
                 <h3 class="text-3xl font-bold text-gray-800 mt-2">0</h3>
-                <p class="text-xs text-gray-400 mt-2">Pedidos realizados</p>
+                <p class="text-xs text-gray-400 mt-2">Se conectará cuando creemos pedidos</p>
             </div>
 
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h2 class="text-lg font-semibold text-gray-800">
-                Primer avance del módulo administrador
+                Avance del módulo administrador
             </h2>
 
             <p class="text-gray-500 mt-2">
-                Este dashboard todavía muestra datos de prueba. Más adelante se conectará con la base de datos para mostrar usuarios, comercios, categorías, productos, pedidos y ventas reales.
+                Este dashboard ya muestra datos reales de usuarios, administradores y categorías. Los comercios, productos y pedidos se conectarán cuando creemos esos módulos.
             </p>
         </div>
 
