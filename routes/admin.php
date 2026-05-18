@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommerceController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,4 +35,6 @@ Route::middleware(['auth', 'admin'])
         Route::patch('/commerces/{commerce}/activate', [CommerceController::class, 'activate'])->name('commerces.activate');
         Route::patch('/commerces/{commerce}/deactivate', [CommerceController::class, 'deactivate'])->name('commerces.deactivate');
         Route::delete('/commerces/{commerce}', [CommerceController::class, 'destroy'])->name('commerces.destroy');
+
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     });
