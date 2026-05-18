@@ -43,8 +43,8 @@
                 Comercios
             </a>
 
-            <a href="#"
-               class="block px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white">
+            <a href="{{ route('admin.reports.index') }}"
+               class="block px-4 py-2 rounded-lg font-medium {{ request()->routeIs('admin.reports.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                 Reportes
             </a>
         </nav>
