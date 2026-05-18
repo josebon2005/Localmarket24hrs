@@ -11,7 +11,6 @@
 
 <div class="min-h-screen flex">
 
-    <!-- Sidebar -->
     <aside class="w-64 bg-slate-900 text-white hidden md:flex md:flex-col">
         <div class="px-6 py-5 border-b border-slate-700">
             <h1 class="text-xl font-bold">LocalMarket</h1>
@@ -20,12 +19,12 @@
 
         <nav class="flex-1 px-4 py-6 space-y-2">
             <a href="{{ route('admin.dashboard') }}"
-               class="block px-4 py-2 rounded-lg bg-slate-800 text-white font-medium">
+               class="block px-4 py-2 rounded-lg font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                 Dashboard
             </a>
 
-            <a href="#"
-               class="block px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white">
+            <a href="{{ route('admin.categories.index') }}"
+               class="block px-4 py-2 rounded-lg font-medium {{ request()->routeIs('admin.categories.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                 Categorías
             </a>
 
@@ -57,10 +56,8 @@
         </div>
     </aside>
 
-    <!-- Contenido principal -->
     <div class="flex-1 flex flex-col">
 
-        <!-- Navbar superior -->
         <header class="bg-white shadow-sm border-b border-gray-200">
             <div class="px-6 py-4 flex items-center justify-between">
                 <div>
@@ -89,7 +86,6 @@
             </div>
         </header>
 
-        <!-- Contenido -->
         <main class="flex-1 p-6">
             @if (session('success'))
                 <div class="mb-4 bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-lg">
