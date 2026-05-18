@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'admin'])
+Route::middleware(['auth', 'active', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
