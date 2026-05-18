@@ -53,9 +53,25 @@
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <p class="text-sm text-gray-500">Comercios creados</p>
-                <h3 class="text-3xl font-bold text-gray-800 mt-2">0</h3>
-                <p class="text-xs text-gray-400 mt-2">Se conectará cuando creemos comercios</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ $totalCommerces }}</h3>
+                <p class="text-xs text-gray-400 mt-2">Negocios registrados</p>
             </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Comercios activos</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ $totalActiveCommerces }}</h3>
+                <p class="text-xs text-gray-400 mt-2">Negocios habilitados</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Comercios suspendidos</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ $totalSuspendedCommerces }}</h3>
+                <p class="text-xs text-gray-400 mt-2">Negocios restringidos</p>
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <p class="text-sm text-gray-500">Productos registrados</p>
@@ -69,6 +85,18 @@
                 <p class="text-xs text-gray-400 mt-2">Se conectará cuando creemos pedidos</p>
             </div>
 
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Ventas generales</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">Q0.00</h3>
+                <p class="text-xs text-gray-400 mt-2">Se conectará con pedidos pagados</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Reportes</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">0</h3>
+                <p class="text-xs text-gray-400 mt-2">Se completará más adelante</p>
+            </div>
+
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -77,7 +105,7 @@
             </h2>
 
             <p class="text-gray-500 mt-2">
-                Este dashboard ya muestra datos reales de usuarios, administradores y categorías. Los comercios, productos y pedidos se conectarán cuando creemos esos módulos.
+                Este dashboard ya muestra datos reales de usuarios, administradores, categorías y comercios. Los productos, pedidos, ventas y reportes se conectarán cuando creemos esos módulos.
             </p>
         </div>
 
