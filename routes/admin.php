@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommerceController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,10 @@ Route::middleware(['auth', 'admin'])
         Route::patch('/users/{user}/ban', [UserController::class, 'ban'])->name('users.ban');
         Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('users.activate');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+        Route::get('/commerces', [CommerceController::class, 'index'])->name('commerces.index');
+        Route::patch('/commerces/{commerce}/suspend', [CommerceController::class, 'suspend'])->name('commerces.suspend');
+        Route::patch('/commerces/{commerce}/activate', [CommerceController::class, 'activate'])->name('commerces.activate');
+        Route::patch('/commerces/{commerce}/deactivate', [CommerceController::class, 'deactivate'])->name('commerces.deactivate');
+        Route::delete('/commerces/{commerce}', [CommerceController::class, 'destroy'])->name('commerces.destroy');
     });

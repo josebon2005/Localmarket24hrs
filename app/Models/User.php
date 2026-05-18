@@ -32,6 +32,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function commerce()
+    {
+        return $this->hasOne(Commerce::class);
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

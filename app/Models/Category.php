@@ -15,6 +15,11 @@ class Category extends Model
         'status',
     ];
 
+    public function commerces()
+    {
+        return $this->hasMany(Commerce::class);
+    }
+
     public function isActiva(): bool
     {
         return $this->status === 'activa';

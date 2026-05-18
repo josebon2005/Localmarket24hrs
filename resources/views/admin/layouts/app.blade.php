@@ -38,8 +38,8 @@
                 Usuarios
             </a>
 
-            <a href="#"
-               class="block px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white">
+            <a href="{{ route('admin.commerces.index') }}"
+               class="block px-4 py-2 rounded-lg font-medium {{ request()->routeIs('admin.commerces.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                 Comercios
             </a>
 
