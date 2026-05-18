@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])
@@ -21,4 +22,9 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/admin-users/create', [AdminUserController::class, 'create'])->name('admin-users.create');
         Route::post('/admin-users', [AdminUserController::class, 'store'])->name('admin-users.store');
+
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::patch('/users/{user}/ban', [UserController::class, 'ban'])->name('users.ban');
+        Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('users.activate');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
