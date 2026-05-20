@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'commerce_id',
+        'name',
+        'description',
+        'image',
+        'price',
+        'stock',
+        'discount_percentage',
+        'status',
+    ];
+
+    public function commerce()
+    {
+        return $this->belongsTo(Commerce::class);
+    }
+
+    public function finalPrice(): float
+    {
+        if ($this->discount_percentage > 0) {
+            return round($this->price - ($this->price * ($this->discount_percentage / 100)), 2);
+        }
+
+        return $this->price;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'activo';
+    }
+
+    public function isInactive(): bool
+    {
+        return $this->status === 'inactivo';
+    }
+
+    public function isOutOfStock(): bool
+    {
+        return $this->stock <= 0;
+    }
+}
