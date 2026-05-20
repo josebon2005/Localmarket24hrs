@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Comerciante;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -51,12 +52,16 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:500'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'price' => ['required', 'numeric', 'min:0.01'],
             'stock' => ['required', 'integer', 'min:0'],
             'discount_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'status' => ['required', 'in:activo,inactivo'],
         ], [
             'name.required' => 'El nombre del producto es obligatorio.',
+            'image.image' => 'El archivo debe ser una imagen.',
+            'image.mimes' => 'La imagen debe ser JPG, JPEG, PNG o WEBP.',
+            'image.max' => 'La imagen no debe pesar más de 2MB.',
             'price.required' => 'El precio es obligatorio.',
             'price.numeric' => 'El precio debe ser un número.',
             'stock.required' => 'El stock es obligatorio.',
@@ -64,9 +69,16 @@ class ProductController extends Controller
             'status.required' => 'El estado es obligatorio.',
         ]);
 
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
+
         $commerce->products()->create([
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
+            'image' => $imagePath,
             'price' => $validated['price'],
             'stock' => $validated['stock'],
             'discount_percentage' => $validated['discount_percentage'] ?? 0,
@@ -100,15 +112,27 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:500'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'price' => ['required', 'numeric', 'min:0.01'],
             'stock' => ['required', 'integer', 'min:0'],
             'discount_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'status' => ['required', 'in:activo,inactivo'],
         ]);
 
+        $imagePath = $product->image;
+
+        if ($request->hasFile('image')) {
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
+
         $product->update([
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
+            'image' => $imagePath,
             'price' => $validated['price'],
             'stock' => $validated['stock'],
             'discount_percentage' => $validated['discount_percentage'] ?? 0,
@@ -126,6 +150,10 @@ class ProductController extends Controller
 
         if (!$commerce || $product->commerce_id !== $commerce->id) {
             abort(403, 'No tienes permiso para eliminar este producto.');
+        }
+
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
         }
 
         $product->delete();

@@ -24,6 +24,7 @@
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
+
                 <button type="submit"
                         class="px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200">
                     Cerrar sesión
