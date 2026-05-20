@@ -18,8 +18,20 @@
 
         <nav class="flex items-center gap-3">
             @auth
+                @if (auth()->user()->role === 'comerciante')
+                    <a href="{{ route('comerciante.dashboard') }}"
+                       class="px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
+                        Mi comercio
+                    </a>
+                @else
+                    <a href="{{ route('comerciante.commerce.create') }}"
+                       class="px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
+                        Vender en LocalMarket
+                    </a>
+                @endif
+
                 <a href="{{ route('dashboard') }}"
-                   class="px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
+                   class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">
                     Mi cuenta
                 </a>
             @else
