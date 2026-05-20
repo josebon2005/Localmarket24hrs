@@ -58,7 +58,7 @@
     </section>
 
     @if (auth()->user()->commerce)
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                 <p class="text-sm text-gray-500">Nombre del comercio</p>
                 <h3 class="text-xl font-bold text-slate-900 mt-2">
@@ -78,6 +78,35 @@
                 <h3 class="text-xl font-bold text-slate-900 mt-2">
                     {{ auth()->user()->commerce->category->name ?? 'Sin categoría' }}
                 </h3>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <p class="text-sm text-gray-500">Productos</p>
+                <h3 class="text-xl font-bold text-slate-900 mt-2">
+                    {{ auth()->user()->commerce->products()->count() }}
+                </h3>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+            <h3 class="text-xl font-bold text-slate-900">
+                Gestión del comercio
+            </h3>
+
+            <p class="text-gray-500 mt-2">
+                Desde aquí puedes administrar los productos de tu comercio.
+            </p>
+
+            <div class="mt-5 flex gap-3">
+                <a href="{{ route('comerciante.products.index') }}"
+                   class="px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
+                    Ver productos
+                </a>
+
+                <a href="{{ route('comerciante.products.create') }}"
+                   class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    Crear producto
+                </a>
             </div>
         </section>
     @else
