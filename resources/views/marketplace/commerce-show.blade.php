@@ -33,7 +33,7 @@
                     Mis pedidos
                 </a>
 
-                <a href="{{ route('dashboard') }}"
+                <a href="{{ route('profile.edit') }}"
                    class="px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
                     Mi cuenta
                 </a>
