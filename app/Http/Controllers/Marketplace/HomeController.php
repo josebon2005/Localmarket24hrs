@@ -35,4 +35,20 @@ class HomeController extends Controller
 
         return view('marketplace.home', compact('categories', 'commerces', 'search', 'categoryId'));
     }
+
+    public function show(Commerce $commerce)
+    {
+        if ($commerce->status !== 'activo') {
+            abort(404);
+        }
+
+        $commerce->load(['category', 'user']);
+
+        $products = $commerce->products()
+            ->where('status', 'activo')
+            ->latest()
+            ->paginate(12);
+
+        return view('marketplace.commerce-show', compact('commerce', 'products'));
+    }
 }

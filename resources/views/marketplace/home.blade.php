@@ -154,7 +154,7 @@
                             </p>
 
                             <div class="mt-5">
-                                <a href="#"
+                                <a href="{{ route('marketplace.commerces.show', $commerce) }}"
                                    class="block text-center px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
                                     Ver comercio
                                 </a>
