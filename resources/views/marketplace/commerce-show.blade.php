@@ -23,6 +23,16 @@
             </a>
 
             @auth
+                <a href="{{ route('marketplace.cart.index') }}"
+                   class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    Carrito
+                </a>
+
+                <a href="{{ route('marketplace.orders.index') }}"
+                   class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    Mis pedidos
+                </a>
+
                 <a href="{{ route('dashboard') }}"
                    class="px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
                     Mi cuenta
@@ -38,6 +48,18 @@
 </header>
 
 <main class="max-w-7xl mx-auto px-6 py-8">
+
+    @if (session('success'))
+        <div class="mb-6 bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-lg">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="mb-6 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <section class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-8">
         <div class="h-48 bg-slate-200 flex items-center justify-center">
@@ -163,10 +185,30 @@
                                 @endif
                             </div>
 
-                            <button type="button"
-                                    class="mt-5 w-full px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
-                                Agregar al carrito
-                            </button>
+                            @if ($product->stock > 0)
+                                @auth
+                                    <form method="POST"
+                                          action="{{ route('marketplace.cart.add', $product) }}">
+                                        @csrf
+
+                                        <button type="submit"
+                                                class="mt-5 w-full px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
+                                            Agregar al carrito
+                                        </button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('login') }}"
+                                       class="block text-center mt-5 w-full px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
+                                        Inicia sesión para comprar
+                                    </a>
+                                @endauth
+                            @else
+                                <button type="button"
+                                        disabled
+                                        class="mt-5 w-full px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed">
+                                    Sin stock
+                                </button>
+                            @endif
                         </div>
                     </div>
                 @endforeach
