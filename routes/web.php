@@ -14,7 +14,7 @@ Route::get('/dashboard', function () {
         return redirect()->route('comerciante.dashboard');
     }
 
-    return view('dashboard');
+    return redirect()->route('marketplace.home');
 })->middleware(['auth', 'verified', 'active'])->name('dashboard');
 
 Route::middleware(['auth', 'active'])->group(function () {
