@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Comerciante\CommerceController;
+use App\Http\Controllers\Comerciante\OrderController;
 use App\Http\Controllers\Comerciante\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,8 @@ Route::middleware(['auth', 'active'])
         Route::put('/productos/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/productos/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
         Route::patch('/productos/{product}/estado', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
+
+        Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/pedidos/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::patch('/pedidos/{order}/estado', [OrderController::class, 'updateStatus'])->name('orders.update-status');
     });
