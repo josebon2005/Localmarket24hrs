@@ -16,6 +16,8 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::patch('/carrito/items/{cartItem}', [CartController::class, 'update'])->name('marketplace.cart.update');
     Route::delete('/carrito/items/{cartItem}', [CartController::class, 'destroy'])->name('marketplace.cart.destroy');
     Route::delete('/carrito/vaciar', [CartController::class, 'clear'])->name('marketplace.cart.clear');
+    Route::post('/carrito/cupon', [CartController::class, 'applyCoupon'])->name('marketplace.cart.coupon.apply');
+    Route::delete('/carrito/cupon', [CartController::class, 'removeCoupon'])->name('marketplace.cart.coupon.remove');
 
     Route::get('/mis-pedidos', [OrderController::class, 'index'])->name('marketplace.orders.index');
     Route::get('/mis-pedidos/{order}', [OrderController::class, 'show'])->name('marketplace.orders.show');

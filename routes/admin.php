@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommerceController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
@@ -21,6 +22,14 @@ Route::middleware(['auth', 'active', 'admin'])
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
         Route::patch('/categories/{category}/toggle-status', [CategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+
+        Route::get('/coupons', [CouponController::class, 'index'])->name('coupons.index');
+        Route::get('/coupons/create', [CouponController::class, 'create'])->name('coupons.create');
+        Route::post('/coupons', [CouponController::class, 'store'])->name('coupons.store');
+        Route::get('/coupons/{coupon}/edit', [CouponController::class, 'edit'])->name('coupons.edit');
+        Route::put('/coupons/{coupon}', [CouponController::class, 'update'])->name('coupons.update');
+        Route::delete('/coupons/{coupon}', [CouponController::class, 'destroy'])->name('coupons.destroy');
+        Route::patch('/coupons/{coupon}/toggle-status', [CouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
 
         Route::get('/admin-users/create', [AdminUserController::class, 'create'])->name('admin-users.create');
         Route::post('/admin-users', [AdminUserController::class, 'store'])->name('admin-users.store');

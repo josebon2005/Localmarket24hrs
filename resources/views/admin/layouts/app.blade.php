@@ -28,6 +28,11 @@
                 Categorías
             </a>
 
+            <a href="{{ route('admin.coupons.index') }}"
+               class="block px-4 py-2 rounded-lg font-medium {{ request()->routeIs('admin.coupons.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                Cupones
+            </a>
+
             <a href="{{ route('admin.admin-users.create') }}"
                class="block px-4 py-2 rounded-lg font-medium {{ request()->routeIs('admin.admin-users.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                 Crear admin

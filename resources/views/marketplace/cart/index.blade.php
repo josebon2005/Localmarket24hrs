@@ -162,11 +162,60 @@
                     </div>
 
                     <div class="flex justify-between text-gray-600">
+                        <span>Subtotal</span>
+                        <span>Q{{ number_format($cart->total(), 2) }}</span>
+                    </div>
+
+                    @if ($coupon)
+                        <div class="flex justify-between text-green-700">
+                            <span>Cupón {{ $coupon->code }}</span>
+                            <span>-Q{{ number_format($discountTotal, 2) }}</span>
+                        </div>
+                    @endif
+
+                    <div class="flex justify-between text-gray-600">
                         <span>Total</span>
                         <span class="font-bold text-slate-900">
-                            Q{{ number_format($cart->total(), 2) }}
+                            Q{{ number_format(max($cart->total() - $discountTotal, 0), 2) }}
                         </span>
                     </div>
+                </div>
+
+                <div class="mt-6 border-t pt-5">
+                    @if ($coupon)
+                        <form method="POST" action="{{ route('marketplace.cart.coupon.remove') }}">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                    class="w-full px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200">
+                                Quitar cupón
+                            </button>
+                        </form>
+                    @else
+                        <form method="POST" action="{{ route('marketplace.cart.coupon.apply') }}" class="space-y-3">
+                            @csrf
+
+                            <div>
+                                <label for="code" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Cupón
+                                </label>
+                                <input type="text"
+                                       name="code"
+                                       id="code"
+                                       placeholder="Ej. LOCAL10"
+                                       class="w-full rounded-lg border-gray-300 focus:border-slate-500 focus:ring-slate-500">
+                                @error('code')
+                                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                Aplicar cupón
+                            </button>
+                        </form>
+                    @endif
                 </div>
 
                 <form method="POST" action="{{ route('marketplace.orders.store') }}" class="mt-6">

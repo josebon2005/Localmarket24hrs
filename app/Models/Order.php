@@ -11,6 +11,10 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'coupon_id',
+        'coupon_code',
+        'subtotal',
+        'discount_total',
         'total',
         'status',
     ];
@@ -23,6 +27,11 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
     }
 
     public function statusLabel(): string

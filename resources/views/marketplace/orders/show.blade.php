@@ -43,7 +43,7 @@
         </div>
     @endif
 
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <p class="text-sm text-gray-500">Estado</p>
             <h2 class="text-xl font-bold text-slate-900 mt-2">
@@ -56,6 +56,16 @@
             <h2 class="text-xl font-bold text-slate-900 mt-2">
                 {{ $order->created_at->format('d/m/Y') }}
             </h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <p class="text-sm text-gray-500">Descuento</p>
+            <h2 class="text-xl font-bold text-green-700 mt-2">
+                Q{{ number_format($order->discount_total, 2) }}
+            </h2>
+            @if ($order->coupon_code)
+                <p class="text-xs text-gray-500">Cupón {{ $order->coupon_code }}</p>
+            @endif
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
