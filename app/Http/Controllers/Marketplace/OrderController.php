@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Marketplace;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Coupon;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
@@ -61,10 +62,17 @@ class OrderController extends Controller
             $total = $cart->items->sum(function ($item) {
                 return $item->subtotal();
             });
+            $coupon = Coupon::find(session('cart_coupon_id'));
+            $discountTotal = ($coupon && $coupon->isAvailableFor($total)) ? $coupon->discountFor($total) : 0;
+            $finalTotal = max($total - $discountTotal, 0);
 
             $order = Order::create([
                 'user_id' => auth()->id(),
-                'total' => $total,
+                'coupon_id' => $discountTotal > 0 ? $coupon->id : null,
+                'coupon_code' => $discountTotal > 0 ? $coupon->code : null,
+                'subtotal' => $total,
+                'discount_total' => $discountTotal,
+                'total' => $finalTotal,
                 'status' => 'pendiente',
             ]);
 
@@ -84,6 +92,11 @@ class OrderController extends Controller
             }
 
             $cart->items()->delete();
+            session()->forget('cart_coupon_id');
+
+            if ($discountTotal > 0) {
+                $coupon->increment('used_count');
+            }
 
             return $order;
         });
