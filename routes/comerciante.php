@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Comerciante\CommerceController;
+use App\Http\Controllers\Comerciante\ConversationController;
 use App\Http\Controllers\Comerciante\CouponController;
 use App\Http\Controllers\Comerciante\OrderController;
 use App\Http\Controllers\Comerciante\ProductController;
@@ -32,6 +33,10 @@ Route::middleware(['auth', 'active'])
         Route::put('/cupones/{coupon}', [CouponController::class, 'update'])->name('coupons.update');
         Route::delete('/cupones/{coupon}', [CouponController::class, 'destroy'])->name('coupons.destroy');
         Route::patch('/cupones/{coupon}/estado', [CouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
+
+        Route::get('/chats', [ConversationController::class, 'index'])->name('conversations.index');
+        Route::get('/chats/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
+        Route::post('/chats/{conversation}/mensajes', [ConversationController::class, 'storeMessage'])->name('conversations.messages.store');
 
         Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/pedidos/{order}', [OrderController::class, 'show'])->name('orders.show');
