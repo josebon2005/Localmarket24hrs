@@ -62,16 +62,17 @@
                     @csrf
                     <input type="hidden" name="order_id" value="{{ $order->id }}">
 
-                    <div class="flex flex-row-reverse justify-end gap-2">
-                        @for ($star = 5; $star >= 1; $star--)
+                    <div id="rating-stars" class="flex justify-start gap-2">
+                        @for ($star = 1; $star <= 5; $star++)
                             <input type="radio"
                                    id="rating-{{ $star }}"
                                    name="rating"
                                    value="{{ $star }}"
-                                   class="peer/rating{{ $star }} hidden"
+                                   class="hidden"
                                    data-message="@if ($star <= 2) Lamentamos que la experiencia no haya sido ideal. Cuéntanos qué podemos mejorar. @elseif ($star === 3) Gracias, tomaremos tu opinión para mejorar la plataforma. @else Nos alegra que la experiencia haya sido buena. Gracias por apoyar el mercado local. @endif">
                             <label for="rating-{{ $star }}"
-                                   class="cursor-pointer text-4xl text-gray-300 hover:text-yellow-400 peer-checked/rating{{ $star }}:text-yellow-400">
+                                   data-star="{{ $star }}"
+                                   class="rating-star cursor-pointer text-4xl text-gray-300 transition-colors">
                                 ★
                             </label>
                         @endfor
@@ -183,9 +184,27 @@
 </main>
 
 <script>
-    document.querySelectorAll('input[name="rating"]').forEach((input) => {
+    const ratingStars = document.querySelectorAll('.rating-star');
+    const ratingInputs = document.querySelectorAll('input[name="rating"]');
+    let selectedRating = 0;
+
+    function paintStars(value) {
+        ratingStars.forEach((star) => {
+            star.classList.toggle('text-yellow-400', Number(star.dataset.star) <= value);
+            star.classList.toggle('text-gray-300', Number(star.dataset.star) > value);
+        });
+    }
+
+    ratingStars.forEach((star) => {
+        star.addEventListener('mouseenter', () => paintStars(Number(star.dataset.star)));
+        star.addEventListener('mouseleave', () => paintStars(selectedRating));
+    });
+
+    ratingInputs.forEach((input) => {
         input.addEventListener('change', () => {
             const message = document.getElementById('rating-message');
+            selectedRating = Number(input.value);
+            paintStars(selectedRating);
 
             if (message) {
                 message.textContent = input.dataset.message;
