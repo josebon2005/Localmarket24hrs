@@ -41,6 +41,11 @@ class Commerce extends Model
         return $this->hasMany(Coupon::class);
     }
 
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
     public function isActivo(): bool
     {
         return $this->status === 'activo';

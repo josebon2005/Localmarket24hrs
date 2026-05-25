@@ -39,6 +39,11 @@ class Order extends Model
         return $this->hasOne(SiteRating::class);
     }
 
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
     public function statusLabel(): string
     {
         return match ($this->status) {
