@@ -291,7 +291,7 @@
 
                     <button type="submit"
                             class="w-full px-4 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
-                        Confirmar pedido
+                        Completar compra
                     </button>
                 </form>
 

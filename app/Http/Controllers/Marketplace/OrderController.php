@@ -103,12 +103,10 @@ class OrderController extends Controller
             return $order;
         });
 
-        $shouldAskForRating = $this->shouldAskForRating($order);
-
         return redirect()
             ->route('marketplace.orders.show', $order)
-            ->with('success', 'Pedido creado correctamente.')
-            ->with('show_site_rating_prompt', $shouldAskForRating);
+            ->with('success', 'Compra exitosa. Gracias por comprar en LocalMarket 24hrs.')
+            ->with('show_site_rating_prompt', $this->shouldAskForRating($order));
     }
 
     private function shouldAskForRating(Order $order): bool
@@ -117,14 +115,6 @@ class OrderController extends Controller
             return false;
         }
 
-        $recentRatingExists = SiteRating::where('user_id', $order->user_id)
-            ->where('created_at', '>=', now()->subDays(7))
-            ->exists();
-
-        if ($recentRatingExists) {
-            return false;
-        }
-
-        return random_int(1, 100) <= 50;
+        return true;
     }
 }
