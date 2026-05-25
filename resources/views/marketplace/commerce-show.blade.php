@@ -103,6 +103,25 @@
                 </div>
             </div>
 
+            @auth
+                @if ($commerce->user_id !== auth()->id())
+                    <form method="POST"
+                          action="{{ route('marketplace.conversations.start', $commerce) }}"
+                          class="mt-6">
+                        @csrf
+                        <button type="submit"
+                                class="px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
+                            Contactar comercio
+                        </button>
+                    </form>
+                @endif
+            @else
+                <a href="{{ route('login') }}"
+                   class="inline-block mt-6 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
+                    Inicia sesión para contactar
+                </a>
+            @endauth
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                 <div class="bg-gray-50 rounded-xl p-4 border">
                     <p class="text-sm text-gray-500">Dueño</p>
