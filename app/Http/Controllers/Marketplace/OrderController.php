@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Order;
+use App\Models\SiteRating;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -27,7 +28,7 @@ class OrderController extends Controller
             abort(403);
         }
 
-        $order->load('items.product.commerce');
+        $order->load('items.product.commerce', 'siteRating');
 
         return view('marketplace.orders.show', compact('order'));
     }
@@ -102,8 +103,28 @@ class OrderController extends Controller
             return $order;
         });
 
+        $shouldAskForRating = $this->shouldAskForRating($order);
+
         return redirect()
             ->route('marketplace.orders.show', $order)
-            ->with('success', 'Pedido creado correctamente.');
+            ->with('success', 'Pedido creado correctamente.')
+            ->with('show_site_rating_prompt', $shouldAskForRating);
+    }
+
+    private function shouldAskForRating(Order $order): bool
+    {
+        if (SiteRating::where('user_id', $order->user_id)->where('order_id', $order->id)->exists()) {
+            return false;
+        }
+
+        $recentRatingExists = SiteRating::where('user_id', $order->user_id)
+            ->where('created_at', '>=', now()->subDays(7))
+            ->exists();
+
+        if ($recentRatingExists) {
+            return false;
+        }
+
+        return random_int(1, 100) <= 50;
     }
 }

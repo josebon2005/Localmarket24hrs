@@ -34,6 +34,11 @@ class Order extends Model
         return $this->belongsTo(Coupon::class);
     }
 
+    public function siteRating()
+    {
+        return $this->hasOne(SiteRating::class);
+    }
+
     public function statusLabel(): string
     {
         return match ($this->status) {
