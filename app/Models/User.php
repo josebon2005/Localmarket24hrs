@@ -52,6 +52,16 @@ class User extends Authenticatable
         return $this->hasMany(SiteRating::class);
     }
 
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
+    public function sentConversationMessages()
+    {
+        return $this->hasMany(ConversationMessage::class, 'sender_id');
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
