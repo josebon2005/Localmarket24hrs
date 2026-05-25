@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Marketplace\CartController;
+use App\Http\Controllers\Marketplace\ConversationController;
 use App\Http\Controllers\Marketplace\HomeController;
 use App\Http\Controllers\Marketplace\OrderController;
 use App\Http\Controllers\Marketplace\SiteRatingController;
@@ -24,4 +25,9 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/mis-pedidos/{order}', [OrderController::class, 'show'])->name('marketplace.orders.show');
     Route::post('/pedidos/confirmar', [OrderController::class, 'store'])->name('marketplace.orders.store');
     Route::post('/valoraciones', [SiteRatingController::class, 'store'])->name('marketplace.site-ratings.store');
+
+    Route::get('/chats', [ConversationController::class, 'index'])->name('marketplace.conversations.index');
+    Route::post('/comercios/{commerce}/chat', [ConversationController::class, 'start'])->name('marketplace.conversations.start');
+    Route::get('/chats/{conversation}', [ConversationController::class, 'show'])->name('marketplace.conversations.show');
+    Route::post('/chats/{conversation}/mensajes', [ConversationController::class, 'storeMessage'])->name('marketplace.conversations.messages.store');
 });
