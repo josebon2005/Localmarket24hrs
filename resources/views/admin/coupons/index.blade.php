@@ -53,6 +53,7 @@
                     <thead class="bg-gray-50 text-gray-600 border-b">
                     <tr>
                         <th class="px-6 py-3">Código</th>
+                        <th class="px-6 py-3">Origen</th>
                         <th class="px-6 py-3">Descuento</th>
                         <th class="px-6 py-3">Uso</th>
                         <th class="px-6 py-3">Vigencia</th>
@@ -67,6 +68,17 @@
                             <td class="px-6 py-4">
                                 <p class="font-bold text-gray-800">{{ $coupon->code }}</p>
                                 <p class="text-xs text-gray-500">{{ $coupon->description ?? 'Sin descripción' }}</p>
+                            </td>
+                            <td class="px-6 py-4 text-gray-700">
+                                @if ($coupon->commerce)
+                                    <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
+                                        {{ $coupon->commerce->name }}
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1 text-xs rounded-full bg-slate-100 text-slate-700">
+                                        LocalMarket
+                                    </span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 text-gray-700">
                                 @if ($coupon->type === 'fixed')
@@ -115,7 +127,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                            <td colspan="7" class="px-6 py-8 text-center text-gray-500">
                                 No hay cupones registrados.
                             </td>
                         </tr>

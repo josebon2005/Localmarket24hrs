@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Comerciante\CommerceController;
+use App\Http\Controllers\Comerciante\CouponController;
 use App\Http\Controllers\Comerciante\OrderController;
 use App\Http\Controllers\Comerciante\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,14 @@ Route::middleware(['auth', 'active'])
         Route::put('/productos/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/productos/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
         Route::patch('/productos/{product}/estado', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
+
+        Route::get('/cupones', [CouponController::class, 'index'])->name('coupons.index');
+        Route::get('/cupones/crear', [CouponController::class, 'create'])->name('coupons.create');
+        Route::post('/cupones', [CouponController::class, 'store'])->name('coupons.store');
+        Route::get('/cupones/{coupon}/editar', [CouponController::class, 'edit'])->name('coupons.edit');
+        Route::put('/cupones/{coupon}', [CouponController::class, 'update'])->name('coupons.update');
+        Route::delete('/cupones/{coupon}', [CouponController::class, 'destroy'])->name('coupons.destroy');
+        Route::patch('/cupones/{coupon}/estado', [CouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
 
         Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/pedidos/{order}', [OrderController::class, 'show'])->name('orders.show');

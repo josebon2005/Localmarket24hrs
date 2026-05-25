@@ -152,6 +152,74 @@
                 </div>
             </section>
 
+            <section class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-5">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Cupones disponibles</h2>
+                        <p class="text-sm text-gray-500">Elige un descuento antes de confirmar tu pedido.</p>
+                    </div>
+                </div>
+
+                @if ($availableCoupons->count() > 0)
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach ($availableCoupons as $availableCoupon)
+                            <div class="border border-dashed border-green-300 bg-green-50 rounded-xl p-4">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div>
+                                        <p class="text-xs font-semibold uppercase tracking-wide text-green-700">
+                                            {{ $availableCoupon->commerce ? $availableCoupon->commerce->name : 'LocalMarket' }}
+                                        </p>
+                                        <h3 class="text-xl font-bold text-slate-900 mt-1">
+                                            {{ $availableCoupon->code }}
+                                        </h3>
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            {{ $availableCoupon->description ?? 'Descuento disponible para esta compra.' }}
+                                        </p>
+                                    </div>
+
+                                    <span class="shrink-0 rounded-lg bg-white px-3 py-2 text-sm font-bold text-green-700 border border-green-200">
+                                        @if ($availableCoupon->type === 'fixed')
+                                            Q{{ number_format($availableCoupon->value, 2) }}
+                                        @else
+                                            {{ number_format($availableCoupon->value, 0) }}%
+                                        @endif
+                                    </span>
+                                </div>
+
+                                <div class="mt-4 flex items-center justify-between gap-3">
+                                    <p class="text-xs text-gray-500">
+                                        Compra mínima Q{{ number_format($availableCoupon->minimum_total, 2) }}
+                                        {{ $availableCoupon->commerce ? 'en este comercio' : 'en el carrito' }}
+                                    </p>
+
+                                    @if ($coupon && $coupon->id === $availableCoupon->id)
+                                        <span class="px-3 py-2 bg-green-200 text-green-800 rounded-lg text-sm font-semibold">
+                                            Aplicado
+                                        </span>
+                                    @else
+                                        <form method="POST" action="{{ route('marketplace.cart.coupon.apply') }}">
+                                            @csrf
+                                            <input type="hidden" name="code" value="{{ $availableCoupon->code }}">
+                                            <button type="submit"
+                                                    class="px-3 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 text-sm">
+                                                Usar cupón
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="border border-dashed border-gray-300 rounded-xl p-6 text-center">
+                        <h3 class="font-semibold text-gray-800">No hay cupones disponibles para este carrito</h3>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Cuando exista un cupón activo que aplique a tu compra, aparecerá aquí.
+                        </p>
+                    </div>
+                @endif
+            </section>
+
             <aside class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 h-fit">
                 <h2 class="text-xl font-bold text-slate-900">Resumen</h2>
 
