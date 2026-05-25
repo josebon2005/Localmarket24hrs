@@ -15,6 +15,7 @@ class CouponController extends Controller
         $status = $request->input('status');
 
         $coupons = Coupon::query()
+            ->with('commerce')
             ->when($search, function ($query, $search) {
                 $query->where('code', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
@@ -34,7 +35,7 @@ class CouponController extends Controller
 
     public function store(Request $request)
     {
-        Coupon::create($this->validatedData($request));
+        Coupon::create($this->validatedData($request) + ['commerce_id' => null]);
 
         return redirect()
             ->route('admin.coupons.index')

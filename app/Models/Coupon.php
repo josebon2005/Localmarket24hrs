@@ -10,6 +10,7 @@ class Coupon extends Model
     use HasFactory;
 
     protected $fillable = [
+        'commerce_id',
         'code',
         'description',
         'type',
@@ -21,6 +22,11 @@ class Coupon extends Model
         'expires_at',
         'status',
     ];
+
+    public function commerce()
+    {
+        return $this->belongsTo(Commerce::class);
+    }
 
     protected function casts(): array
     {
@@ -64,6 +70,22 @@ class Coupon extends Model
         }
 
         return round($subtotal * ((float) $this->value / 100), 2);
+    }
+
+    public function applicableSubtotal($cartItems): float
+    {
+        if (!$this->commerce_id) {
+            return $cartItems->sum(fn ($item) => $item->subtotal());
+        }
+
+        return $cartItems
+            ->filter(fn ($item) => $item->product->commerce_id === $this->commerce_id)
+            ->sum(fn ($item) => $item->subtotal());
+    }
+
+    public function originLabel(): string
+    {
+        return $this->commerce_id ? 'Comercio' : 'LocalMarket';
     }
 
     public function typeLabel(): string

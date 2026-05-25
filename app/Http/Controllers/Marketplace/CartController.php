@@ -16,17 +16,38 @@ class CartController extends Controller
         $cart = $this->getCart();
 
         $cart->load('items.product.commerce');
+        $subtotal = $cart->total();
         $coupon = Coupon::find(session('cart_coupon_id'));
         $discountTotal = 0;
+        $couponSubtotal = $coupon ? $coupon->applicableSubtotal($cart->items) : 0;
 
-        if ($coupon && $coupon->isAvailableFor($cart->total())) {
-            $discountTotal = $coupon->discountFor($cart->total());
+        if ($coupon && $coupon->isAvailableFor($couponSubtotal)) {
+            $discountTotal = $coupon->discountFor($couponSubtotal);
         } else {
             session()->forget('cart_coupon_id');
             $coupon = null;
         }
 
-        return view('marketplace.cart.index', compact('cart', 'coupon', 'discountTotal'));
+        $commerceIds = $cart->items
+            ->pluck('product.commerce_id')
+            ->filter()
+            ->unique()
+            ->values();
+
+        $availableCoupons = Coupon::with('commerce')
+            ->where('status', 'activo')
+            ->where(function ($query) use ($commerceIds) {
+                $query->whereNull('commerce_id')
+                    ->orWhereIn('commerce_id', $commerceIds);
+            })
+            ->orderBy('minimum_total')
+            ->orderByDesc('value')
+            ->get()
+            ->filter(function (Coupon $availableCoupon) use ($cart) {
+                return $availableCoupon->isAvailableFor($availableCoupon->applicableSubtotal($cart->items));
+            });
+
+        return view('marketplace.cart.index', compact('cart', 'coupon', 'discountTotal', 'availableCoupons'));
     }
 
     public function add(Product $product)
@@ -126,11 +147,11 @@ class CartController extends Controller
 
         $cart = $this->getCart();
         $cart->load('items.product.commerce');
-        $subtotal = $cart->total();
 
         $coupon = Coupon::where('code', strtoupper(trim($validated['code'])))->first();
+        $couponSubtotal = $coupon ? $coupon->applicableSubtotal($cart->items) : 0;
 
-        if (!$coupon || !$coupon->isAvailableFor($subtotal)) {
+        if (!$coupon || !$coupon->isAvailableFor($couponSubtotal)) {
             return redirect()
                 ->route('marketplace.cart.index')
                 ->with('error', 'El cupón no existe, venció o no aplica para este carrito.');

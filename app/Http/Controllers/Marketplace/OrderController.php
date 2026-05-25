@@ -63,7 +63,8 @@ class OrderController extends Controller
                 return $item->subtotal();
             });
             $coupon = Coupon::find(session('cart_coupon_id'));
-            $discountTotal = ($coupon && $coupon->isAvailableFor($total)) ? $coupon->discountFor($total) : 0;
+            $couponSubtotal = $coupon ? $coupon->applicableSubtotal($cart->items) : 0;
+            $discountTotal = ($coupon && $coupon->isAvailableFor($couponSubtotal)) ? $coupon->discountFor($couponSubtotal) : 0;
             $finalTotal = max($total - $discountTotal, 0);
 
             $order = Order::create([
