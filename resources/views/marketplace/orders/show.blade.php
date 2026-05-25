@@ -43,6 +43,62 @@
         </div>
     @endif
 
+    @if (session('show_site_rating_prompt') && !$order->siteRating)
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                <div>
+                    <p class="text-sm font-semibold text-green-700">Tu opinión nos ayuda</p>
+                    <h2 class="text-xl font-bold text-slate-900 mt-1">
+                        ¿Quieres valorar nuestra página?
+                    </h2>
+                    <p id="rating-message" class="text-gray-500 mt-2">
+                        Selecciona de 1 a 5 estrellas según cómo sentiste la experiencia.
+                    </p>
+                </div>
+
+                <form method="POST"
+                      action="{{ route('marketplace.site-ratings.store') }}"
+                      class="w-full lg:max-w-xl">
+                    @csrf
+                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+
+                    <div class="flex flex-row-reverse justify-end gap-2">
+                        @for ($star = 5; $star >= 1; $star--)
+                            <input type="radio"
+                                   id="rating-{{ $star }}"
+                                   name="rating"
+                                   value="{{ $star }}"
+                                   class="peer/rating{{ $star }} hidden"
+                                   data-message="@if ($star <= 2) Lamentamos que la experiencia no haya sido ideal. Cuéntanos qué podemos mejorar. @elseif ($star === 3) Gracias, tomaremos tu opinión para mejorar la plataforma. @else Nos alegra que la experiencia haya sido buena. Gracias por apoyar el mercado local. @endif">
+                            <label for="rating-{{ $star }}"
+                                   class="cursor-pointer text-4xl text-gray-300 hover:text-yellow-400 peer-checked/rating{{ $star }}:text-yellow-400">
+                                ★
+                            </label>
+                        @endfor
+                    </div>
+
+                    @error('rating')
+                    <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
+                    @enderror
+
+                    <textarea name="comment"
+                              rows="3"
+                              placeholder="Comentario opcional"
+                              class="mt-4 w-full rounded-lg border-gray-300 focus:border-slate-500 focus:ring-slate-500">{{ old('comment') }}</textarea>
+
+                    @error('comment')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+
+                    <button type="submit"
+                            class="mt-3 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
+                        Enviar valoración
+                    </button>
+                </form>
+            </div>
+        </section>
+    @endif
+
     <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <p class="text-sm text-gray-500">Estado</p>
@@ -125,6 +181,18 @@
     </section>
 
 </main>
+
+<script>
+    document.querySelectorAll('input[name="rating"]').forEach((input) => {
+        input.addEventListener('change', () => {
+            const message = document.getElementById('rating-message');
+
+            if (message) {
+                message.textContent = input.dataset.message;
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
