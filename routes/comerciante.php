@@ -3,6 +3,7 @@
 use App\Http\Controllers\Comerciante\CommerceController;
 use App\Http\Controllers\Comerciante\OrderController;
 use App\Http\Controllers\Comerciante\ProductController;
+use App\Http\Controllers\Comerciante\ConversationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'active'])
@@ -23,6 +24,10 @@ Route::middleware(['auth', 'active'])
         Route::put('/productos/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/productos/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
         Route::patch('/productos/{product}/estado', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
+
+        Route::get('/chats', [ConversationController::class, 'index'])->name('conversations.index');
+        Route::get('/chats/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
+        Route::post('/chats/{conversation}/mensajes', [ConversationController::class, 'storeMessage'])->name('conversations.messages.store');
 
         Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/pedidos/{order}', [OrderController::class, 'show'])->name('orders.show');
