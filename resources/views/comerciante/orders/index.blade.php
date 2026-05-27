@@ -54,6 +54,7 @@
                         <th class="px-6 py-3">Comprador</th>
                         <th class="px-6 py-3">Productos de tu comercio</th>
                         <th class="px-6 py-3">Estado</th>
+                        <th class="px-6 py-3">Entrega</th>
                         <th class="px-6 py-3">Total de tu comercio</th>
                         <th class="px-6 py-3">Fecha</th>
                         <th class="px-6 py-3 text-right">Acciones</th>
@@ -104,6 +105,13 @@
                                         {{ $order->statusLabel() }}
                                     </span>
                                 @endif
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-700">
+                                <p>{{ $order->deliveryStatusLabel() }}</p>
+                                <p class="text-xs text-gray-500">
+                                    {{ $order->deliveryUser->name ?? 'Sin repartidor' }}
+                                </p>
                             </td>
 
                             <td class="px-6 py-4 font-bold text-gray-800">

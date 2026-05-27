@@ -33,6 +33,16 @@ class LocalMarketSeeder extends Seeder
             ]
         );
 
+        User::updateOrCreate(
+            ['email' => 'repartidor@localmarket.com'],
+            [
+                'name' => 'Repartidor Demo',
+                'password' => Hash::make('password'),
+                'role' => 'repartidor',
+                'status' => 'activo',
+            ]
+        );
+
         $categories = [
             'Comida' => ['description' => 'Comercios de comida y bebidas.', 'status' => 'activa'],
             'Ropa' => ['description' => 'Tiendas de ropa, zapatos y accesorios.', 'status' => 'activa'],

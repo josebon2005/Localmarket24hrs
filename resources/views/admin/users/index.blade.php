@@ -33,6 +33,7 @@
                         <option value="admin" {{ $role === 'admin' ? 'selected' : '' }}>Admin</option>
                         <option value="usuario" {{ $role === 'usuario' ? 'selected' : '' }}>Usuario</option>
                         <option value="comerciante" {{ $role === 'comerciante' ? 'selected' : '' }}>Comerciante</option>
+                        <option value="repartidor" {{ $role === 'repartidor' ? 'selected' : '' }}>Repartidor</option>
                     </select>
                 </div>
 
@@ -100,6 +101,10 @@
                                 @elseif ($user->role === 'comerciante')
                                     <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
                                         Comerciante
+                                    </span>
+                                @elseif ($user->role === 'repartidor')
+                                    <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
+                                        Repartidor
                                     </span>
                                 @else
                                     <span class="px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700">

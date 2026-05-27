@@ -38,6 +38,11 @@
                 Crear admin
             </a>
 
+            <a href="{{ route('admin.delivery.index') }}"
+               class="block px-4 py-2 rounded-lg font-medium {{ request()->routeIs('admin.delivery.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                Repartidores
+            </a>
+
             <a href="{{ route('admin.users.index') }}"
                class="block px-4 py-2 rounded-lg font-medium {{ request()->routeIs('admin.users.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                 Usuarios

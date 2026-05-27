@@ -41,4 +41,5 @@ Route::middleware(['auth', 'active'])
         Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/pedidos/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::patch('/pedidos/{order}/estado', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+        Route::patch('/pedidos/{order}/repartidor', [OrderController::class, 'assignDelivery'])->name('orders.assign-delivery');
     });

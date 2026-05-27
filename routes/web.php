@@ -14,6 +14,10 @@ Route::get('/dashboard', function () {
         return redirect()->route('comerciante.dashboard');
     }
 
+    if ($user && $user->role === 'repartidor') {
+        return redirect()->route('repartidor.dashboard');
+    }
+
     return redirect()->route('marketplace.home');
 })->middleware(['auth', 'verified', 'active'])->name('dashboard');
 
@@ -26,4 +30,5 @@ Route::middleware(['auth', 'active'])->group(function () {
 require __DIR__.'/marketplace.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/comerciante.php';
+require __DIR__.'/repartidor.php';
 require __DIR__.'/auth.php';
