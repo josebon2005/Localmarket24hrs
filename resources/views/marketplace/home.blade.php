@@ -260,7 +260,7 @@
                     </div>
                     <div class="border-t border-gray-100 pt-2 flex items-center justify-between">
                         <span class="text-xs text-gray-500">Total</span>
-                        <span class="text-sm font-black text-gray-900">$48.500</span>
+                        <span class="text-sm font-black text-gray-900">Q48.50</span>
                     </div>
                 </div>
 
@@ -418,19 +418,105 @@
             </div>
         </div>
 
-        @php $catEmojis = ['🍕','👗','💻','🏠','💊','📚','🎮','🌿','🔧','✂️','🎨','🍰','🐾','⚽','🎵']; @endphp
+        @php
+        $catIconMap = [
+            ['keys' => ['comida','restaurante','pizza','burger','pollo','carne','mariscos','sushi','café','cafe','panadería','panaderia','pastelería','pasteleria','dulces','almuerzo','desayuno','cocina','bebida'],
+             'gradient'=>'bg-gradient-to-br from-red-500 to-orange-500','shadow'=>'shadow-red-500/30',
+             'card_hover'=>'hover:border-red-200 hover:bg-red-50/50','text_hover'=>'group-hover:text-red-600',
+             'path'=>'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01'],
+            ['keys' => ['ropa','moda','calzado','textil','boutique','zapatos','vestido','dama','caballero','tela'],
+             'gradient'=>'bg-gradient-to-br from-purple-500 to-pink-500','shadow'=>'shadow-purple-500/30',
+             'card_hover'=>'hover:border-purple-200 hover:bg-purple-50/50','text_hover'=>'group-hover:text-purple-600',
+             'path'=>'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'],
+            ['keys' => ['tecnología','tecnologia','electrónica','electronica','celular','computadora','teléfono','telefono','gadget','informática','informatica','internet'],
+             'gradient'=>'bg-gradient-to-br from-blue-500 to-cyan-500','shadow'=>'shadow-blue-500/30',
+             'card_hover'=>'hover:border-blue-200 hover:bg-blue-50/50','text_hover'=>'group-hover:text-blue-600',
+             'path'=>'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
+            ['keys' => ['hogar','muebles','decoración','decoracion','electrodoméstico','electrodomestico'],
+             'gradient'=>'bg-gradient-to-br from-teal-500 to-emerald-500','shadow'=>'shadow-teal-500/30',
+             'card_hover'=>'hover:border-teal-200 hover:bg-teal-50/50','text_hover'=>'group-hover:text-teal-600',
+             'path'=>'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
+            ['keys' => ['salud','farmacia','medicina','médico','medico','clínica','clinica','bienestar','dental','dentista','hospital'],
+             'gradient'=>'bg-gradient-to-br from-green-500 to-emerald-400','shadow'=>'shadow-green-500/30',
+             'card_hover'=>'hover:border-green-200 hover:bg-green-50/50','text_hover'=>'group-hover:text-green-600',
+             'path'=>'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'],
+            ['keys' => ['libros','libro','educación','educacion','papelería','papeleria','escolar','academia','cursos','tutorías','tutorias'],
+             'gradient'=>'bg-gradient-to-br from-indigo-500 to-blue-500','shadow'=>'shadow-indigo-500/30',
+             'card_hover'=>'hover:border-indigo-200 hover:bg-indigo-50/50','text_hover'=>'group-hover:text-indigo-600',
+             'path'=>'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'],
+            ['keys' => ['deportes','deporte','sport','fitness','gym','gimnasio','ejercicio','yoga','fútbol','futbol','running','natación','natacion'],
+             'gradient'=>'bg-gradient-to-br from-emerald-500 to-lime-500','shadow'=>'shadow-emerald-500/30',
+             'card_hover'=>'hover:border-emerald-200 hover:bg-emerald-50/50','text_hover'=>'group-hover:text-emerald-600',
+             'path'=>'M13 10V3L4 14h7v7l9-11h-7z'],
+            ['keys' => ['belleza','peluquería','peluqueria','estética','estetica','spa','salón','salon','barbería','barberia','cosméticos','cosmeticos','maquillaje'],
+             'gradient'=>'bg-gradient-to-br from-rose-500 to-pink-500','shadow'=>'shadow-rose-500/30',
+             'card_hover'=>'hover:border-rose-200 hover:bg-rose-50/50','text_hover'=>'group-hover:text-rose-600',
+             'path'=>'M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z'],
+            ['keys' => ['mascotas','mascota','veterinaria','veterinario','animales','animal','perros','gatos','pet'],
+             'gradient'=>'bg-gradient-to-br from-amber-500 to-yellow-400','shadow'=>'shadow-amber-500/30',
+             'card_hover'=>'hover:border-amber-200 hover:bg-amber-50/50','text_hover'=>'group-hover:text-amber-600',
+             'path'=>'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
+            ['keys' => ['música','musica','audio','instrumentos','instrumento','discos','concierto'],
+             'gradient'=>'bg-gradient-to-br from-violet-500 to-purple-500','shadow'=>'shadow-violet-500/30',
+             'card_hover'=>'hover:border-violet-200 hover:bg-violet-50/50','text_hover'=>'group-hover:text-violet-600',
+             'path'=>'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3'],
+            ['keys' => ['arte','artesanías','artesania','manualidades','pintura','galería','galeria','diseño','fotografía','fotografia'],
+             'gradient'=>'bg-gradient-to-br from-fuchsia-500 to-rose-500','shadow'=>'shadow-fuchsia-500/30',
+             'card_hover'=>'hover:border-fuchsia-200 hover:bg-fuchsia-50/50','text_hover'=>'group-hover:text-fuchsia-600',
+             'path'=>'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
+            ['keys' => ['ferretería','ferreteria','herramientas','construcción','construccion','materiales','mecánica','reparación','reparacion'],
+             'gradient'=>'bg-gradient-to-br from-slate-600 to-gray-700','shadow'=>'shadow-slate-500/30',
+             'card_hover'=>'hover:border-slate-200 hover:bg-slate-50/50','text_hover'=>'group-hover:text-slate-600',
+             'path'=>'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065zM15 12a3 3 0 11-6 0 3 3 0 016 0z'],
+            ['keys' => ['plantas','planta','naturaleza','flores','flor','jardín','jardin','vivero','orgánico','organico'],
+             'gradient'=>'bg-gradient-to-br from-lime-500 to-green-500','shadow'=>'shadow-lime-500/30',
+             'card_hover'=>'hover:border-lime-200 hover:bg-lime-50/50','text_hover'=>'group-hover:text-lime-600',
+             'path'=>'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
+            ['keys' => ['joyería','joyeria','joyas','accesorios','bisutería','bisuteria','relojes','reloj','anillos','aretes'],
+             'gradient'=>'bg-gradient-to-br from-sky-500 to-blue-600','shadow'=>'shadow-sky-500/30',
+             'card_hover'=>'hover:border-sky-200 hover:bg-sky-50/50','text_hover'=>'group-hover:text-sky-600',
+             'path'=>'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z'],
+            ['keys' => ['auto','autos','vehículos','vehiculos','repuestos','transporte','automotriz','taller','mecánica','mecanica'],
+             'gradient'=>'bg-gradient-to-br from-zinc-500 to-slate-600','shadow'=>'shadow-zinc-500/30',
+             'card_hover'=>'hover:border-zinc-200 hover:bg-zinc-50/50','text_hover'=>'group-hover:text-zinc-600',
+             'path'=>'M8 7h12m0 0l-4-4m4 4l-4 4m0 5H4m0 0l4 4m-4-4l4-4'],
+            ['keys' => ['juguetes','juguete','juguetería','jugueteria','niños','infantil','bebés','bebes','bebe'],
+             'gradient'=>'bg-gradient-to-br from-yellow-400 to-orange-400','shadow'=>'shadow-yellow-400/30',
+             'card_hover'=>'hover:border-yellow-200 hover:bg-yellow-50/50','text_hover'=>'group-hover:text-yellow-600',
+             'path'=>'M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7'],
+            ['keys' => ['videojuegos','videojuego','gaming','gamer','consola','xbox','playstation','nintendo','juegos'],
+             'gradient'=>'bg-gradient-to-br from-violet-600 to-indigo-600','shadow'=>'shadow-violet-500/30',
+             'card_hover'=>'hover:border-violet-200 hover:bg-violet-50/50','text_hover'=>'group-hover:text-violet-600',
+             'path'=>'M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z'],
+            ['keys' => ['supermercado','mercado','abarrotes','abarrotería','abarroteria','víveres','viveres','almacén','almacen'],
+             'gradient'=>'bg-gradient-to-br from-orange-400 to-amber-400','shadow'=>'shadow-orange-400/30',
+             'card_hover'=>'hover:border-orange-200 hover:bg-orange-50/50','text_hover'=>'group-hover:text-orange-600',
+             'path'=>'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'],
+        ];
+        $defaultIcon = ['gradient'=>'bg-gradient-to-br from-orange-500 to-amber-500','shadow'=>'shadow-orange-500/30',
+                        'card_hover'=>'hover:border-orange-200 hover:bg-orange-50/50','text_hover'=>'group-hover:text-orange-600',
+                        'path'=>'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'];
+        @endphp
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             @foreach($categories->take(10) as $cat)
-                @php $stagger = ($loop->index % 5) + 1; $emoji = $catEmojis[$loop->index % count($catEmojis)]; @endphp
+                @php
+                    $stagger = ($loop->index % 5) + 1;
+                    $icon = $defaultIcon;
+                    $lowerName = strtolower($cat->name);
+                    foreach ($catIconMap as $cfg) {
+                        foreach ($cfg['keys'] as $kw) {
+                            if (str_contains($lowerName, $kw)) { $icon = $cfg; break 2; }
+                        }
+                    }
+                @endphp
                 <a href="{{ route('marketplace.home', ['category_id' => $cat->id]) }}"
-                   class="reveal stagger-{{ $stagger }}
-                          group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-gray-100
-                          hover:border-orange-200 hover:bg-orange-50 hover:-translate-y-1 hover:shadow-lg
-                          transition-all duration-300">
-                    <div class="w-14 h-14 rounded-2xl bg-orange-50 group-hover:bg-orange-100 flex items-center justify-center text-3xl transition-all duration-300 group-hover:scale-110">
-                        {{ $emoji }}
+                   class="reveal stagger-{{ $stagger }} group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-gray-100 {{ $icon['card_hover'] }} hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl {{ $icon['gradient'] }} shadow-lg {{ $icon['shadow'] }} flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="{{ $icon['path'] }}"/>
+                        </svg>
                     </div>
-                    <span class="text-sm font-semibold text-gray-700 group-hover:text-orange-600 text-center transition-colors">{{ $cat->name }}</span>
+                    <span class="text-sm font-semibold text-gray-700 {{ $icon['text_hover'] }} text-center transition-colors leading-snug">{{ $cat->name }}</span>
                 </a>
             @endforeach
         </div>
