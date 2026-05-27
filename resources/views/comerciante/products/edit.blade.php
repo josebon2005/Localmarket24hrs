@@ -101,16 +101,21 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div>
                     <label for="price" class="block text-sm font-medium text-gray-700 mb-1">
-                        Precio
+                        Precio <span class="text-gray-400 font-normal">(Quetzales)</span>
                     </label>
 
-                    <input type="number"
-                           id="price"
-                           name="price"
-                           value="{{ old('price', $product->price) }}"
-                           step="0.01"
-                           min="0"
-                           class="w-full rounded-lg border-gray-300 focus:border-slate-500 focus:ring-slate-500">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 font-bold text-sm">Q</span>
+                        </div>
+                        <input type="number"
+                               id="price"
+                               name="price"
+                               value="{{ old('price', $product->price) }}"
+                               step="0.01"
+                               min="0"
+                               class="w-full pl-7 rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500">
+                    </div>
 
                     @error('price')
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
