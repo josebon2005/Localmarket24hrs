@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    public function deliveryOrders()
+    {
+        return $this->hasMany(Order::class, 'delivery_user_id');
+    }
+
     public function siteRatings()
     {
         return $this->hasMany(SiteRating::class);
@@ -70,6 +75,11 @@ class User extends Authenticatable
     public function isComerciante(): bool
     {
         return $this->role === 'comerciante';
+    }
+
+    public function isRepartidor(): bool
+    {
+        return $this->role === 'repartidor';
     }
 
     public function isUsuario(): bool

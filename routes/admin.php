@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommerceController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DeliveryController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,10 @@ Route::middleware(['auth', 'active', 'admin'])
 
         Route::get('/admin-users/create', [AdminUserController::class, 'create'])->name('admin-users.create');
         Route::post('/admin-users', [AdminUserController::class, 'store'])->name('admin-users.store');
+
+        Route::get('/repartidores', [DeliveryController::class, 'index'])->name('delivery.index');
+        Route::post('/repartidores', [DeliveryController::class, 'store'])->name('delivery.store');
+        Route::patch('/pedidos/{order}/repartidor', [DeliveryController::class, 'assign'])->name('delivery.assign');
 
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::patch('/users/{user}/ban', [UserController::class, 'ban'])->name('users.ban');

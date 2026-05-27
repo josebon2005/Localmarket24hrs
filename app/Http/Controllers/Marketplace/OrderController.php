@@ -7,6 +7,8 @@ use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\SiteRating;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -15,7 +17,7 @@ class OrderController extends Controller
     {
         $orders = auth()->user()
             ->orders()
-            ->with('items.product.commerce')
+            ->with(['items.product.commerce', 'deliveryUser'])
             ->latest()
             ->paginate(10);
 
@@ -28,9 +30,47 @@ class OrderController extends Controller
             abort(403);
         }
 
-        $order->load('items.product.commerce', 'siteRating');
+        $order->load('items.product.commerce', 'siteRating', 'deliveryUser');
 
-        return view('marketplace.orders.show', compact('order'));
+        $activeRepartidores = User::where('role', 'repartidor')
+            ->where('status', 'activo')
+            ->orderBy('name')
+            ->get();
+
+        return view('marketplace.orders.show', compact('order', 'activeRepartidores'));
+    }
+
+    public function assignDelivery(Request $request, Order $order)
+    {
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'delivery_user_id' => ['nullable', 'exists:users,id'],
+        ]);
+
+        $repartidorId = $validated['delivery_user_id'] ?? null;
+
+        if ($repartidorId) {
+            $repartidor = User::where('role', 'repartidor')
+                ->where('status', 'activo')
+                ->findOrFail($repartidorId);
+
+            $order->update([
+                'delivery_user_id' => $repartidor->id,
+                'delivery_status' => $order->delivery_status === 'sin_asignar' ? 'asignado' : $order->delivery_status,
+            ]);
+        } else {
+            $order->update([
+                'delivery_user_id' => null,
+                'delivery_status' => 'sin_asignar',
+            ]);
+        }
+
+        return redirect()
+            ->route('marketplace.orders.show', $order)
+            ->with('success', 'Repartidor asignado correctamente.');
     }
 
     public function store()

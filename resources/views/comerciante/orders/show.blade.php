@@ -49,7 +49,7 @@
         </div>
     @endif
 
-    <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <section class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <p class="text-sm text-gray-500">Comprador</p>
             <h2 class="text-lg font-bold text-slate-900 mt-2">
@@ -79,6 +79,16 @@
             <h2 class="text-lg font-bold text-slate-900 mt-2">
                 Q{{ number_format($order->items->sum('subtotal'), 2) }}
             </h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <p class="text-sm text-gray-500">Entrega</p>
+            <h2 class="text-lg font-bold text-slate-900 mt-2">
+                {{ $order->deliveryStatusLabel() }}
+            </h2>
+            <p class="text-xs text-gray-500">
+                {{ $order->deliveryUser->name ?? 'Sin repartidor asignado' }}
+            </p>
         </div>
     </section>
 
@@ -118,6 +128,47 @@
                 <button type="submit"
                         class="w-full px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
                     Actualizar estado
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8">
+        <h2 class="text-lg font-bold text-slate-900 mb-4">
+            Servicio a domicilio
+        </h2>
+
+        <form method="POST"
+              action="{{ route('comerciante.orders.assign-delivery', $order) }}"
+              class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            @csrf
+            @method('PATCH')
+
+            <div class="md:col-span-2">
+                <label for="delivery_user_id" class="block text-sm font-medium text-gray-700 mb-1">
+                    Repartidor asignado
+                </label>
+
+                <select id="delivery_user_id"
+                        name="delivery_user_id"
+                        class="w-full rounded-lg border-gray-300 focus:border-slate-500 focus:ring-slate-500">
+                    <option value="">Sin repartidor</option>
+                    @foreach ($activeRepartidores as $repartidor)
+                        <option value="{{ $repartidor->id }}" {{ $order->delivery_user_id === $repartidor->id ? 'selected' : '' }}>
+                            {{ $repartidor->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @error('delivery_user_id')
+                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="flex items-end">
+                <button type="submit"
+                        class="w-full px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800">
+                    Guardar repartidor
                 </button>
             </div>
         </form>

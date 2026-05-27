@@ -23,6 +23,7 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     Route::get('/mis-pedidos', [OrderController::class, 'index'])->name('marketplace.orders.index');
     Route::get('/mis-pedidos/{order}', [OrderController::class, 'show'])->name('marketplace.orders.show');
+    Route::patch('/mis-pedidos/{order}/repartidor', [OrderController::class, 'assignDelivery'])->name('marketplace.orders.assign-delivery');
     Route::post('/pedidos/confirmar', [OrderController::class, 'store'])->name('marketplace.orders.store');
     Route::post('/valoraciones', [SiteRatingController::class, 'store'])->name('marketplace.site-ratings.store');
 

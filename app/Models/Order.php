@@ -11,17 +11,24 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'delivery_user_id',
         'coupon_id',
         'coupon_code',
         'subtotal',
         'discount_total',
         'total',
         'status',
+        'delivery_status',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function deliveryUser()
+    {
+        return $this->belongsTo(User::class, 'delivery_user_id');
     }
 
     public function items()
@@ -54,6 +61,17 @@ class Order extends Model
             'entregado' => 'Entregado',
             'cancelado' => 'Cancelado',
             default => 'Pendiente',
+        };
+    }
+
+    public function deliveryStatusLabel(): string
+    {
+        return match ($this->delivery_status) {
+            'asignado' => 'Asignado',
+            'recogido' => 'Recogido',
+            'en_camino' => 'En camino',
+            'entregado' => 'Entregado',
+            default => 'Sin asignar',
         };
     }
 }
