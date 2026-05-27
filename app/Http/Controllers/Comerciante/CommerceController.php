@@ -37,25 +37,35 @@ class CommerceController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:150'],
+            'name'        => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:500'],
             'category_id' => ['required', 'exists:categories,id'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:30'],
+            'address'     => ['nullable', 'string', 'max:255'],
+            'phone'       => ['nullable', 'string', 'max:30'],
+            'logo'        => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ], [
-            'name.required' => 'El nombre del comercio es obligatorio.',
+            'name.required'       => 'El nombre del comercio es obligatorio.',
             'category_id.required' => 'Debes seleccionar una categoría.',
-            'category_id.exists' => 'La categoría seleccionada no es válida.',
+            'category_id.exists'  => 'La categoría seleccionada no es válida.',
+            'logo.image'          => 'El logo debe ser una imagen.',
+            'logo.mimes'          => 'El logo debe ser JPG, PNG o WebP.',
+            'logo.max'            => 'El logo no puede superar los 2 MB.',
         ]);
 
+        $logoPath = null;
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo')->store('logos', 'public');
+        }
+
         Commerce::create([
-            'user_id' => $user->id,
+            'user_id'     => $user->id,
             'category_id' => $validated['category_id'],
-            'name' => $validated['name'],
+            'name'        => $validated['name'],
             'description' => $validated['description'] ?? null,
-            'address' => $validated['address'] ?? null,
-            'phone' => $validated['phone'] ?? null,
-            'status' => 'activo',
+            'address'     => $validated['address'] ?? null,
+            'phone'       => $validated['phone'] ?? null,
+            'logo'        => $logoPath,
+            'status'      => 'activo',
         ]);
 
         $user->update([
