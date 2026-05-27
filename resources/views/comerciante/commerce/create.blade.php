@@ -101,7 +101,12 @@
         description: '{{ old('description') }}',
         category: '{{ old('category_id') ? $categories->firstWhere('id', old('category_id'))?->name : '' }}',
         address: '{{ old('address') }}',
-        phone: '{{ old('phone') }}'
+        phone: '{{ old('phone') }}',
+        logoUrl: null,
+        handleLogo(e) {
+          const file = e.target.files[0];
+          this.logoUrl = file ? URL.createObjectURL(file) : null;
+        }
       }">
 
     <div class="grid lg:grid-cols-5 gap-8 items-start">
@@ -138,8 +143,52 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ route('comerciante.commerce.store') }}" class="p-7 space-y-6" id="commerce-form">
+                <form method="POST" action="{{ route('comerciante.commerce.store') }}" enctype="multipart/form-data" class="p-7 space-y-6" id="commerce-form">
                     @csrf
+
+                    {{-- Logo --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            Logo del comercio
+                            <span class="ml-1 text-xs font-normal text-gray-400">(opcional · JPG, PNG o WebP · máx. 2 MB)</span>
+                        </label>
+                        <div class="flex items-center gap-5">
+                            {{-- Preview circle --}}
+                            <div class="shrink-0 w-20 h-20 rounded-2xl border-2 border-dashed border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center transition-all duration-300"
+                                 :class="logoUrl ? 'border-orange-300 bg-white' : 'border-gray-200 bg-gray-50'">
+                                <img x-show="logoUrl" :src="logoUrl" alt="Logo preview"
+                                     class="w-full h-full object-cover">
+                                <svg x-show="!logoUrl" class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            {{-- Drop zone / button --}}
+                            <div class="flex-1">
+                                <label for="logo"
+                                       class="flex flex-col items-center justify-center w-full py-5 rounded-xl border-2 border-dashed cursor-pointer transition-all duration-200"
+                                       :class="logoUrl ? 'border-orange-300 bg-orange-50/50' : 'border-gray-200 bg-gray-50 hover:border-orange-300 hover:bg-orange-50/30'">
+                                    <svg class="w-6 h-6 mb-1.5 transition-colors" :class="logoUrl ? 'text-orange-400' : 'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                    <span class="text-sm font-semibold transition-colors" :class="logoUrl ? 'text-orange-600' : 'text-gray-600'">
+                                        <span x-show="!logoUrl">Seleccionar imagen</span>
+                                        <span x-show="logoUrl">Cambiar imagen</span>
+                                    </span>
+                                    <span class="text-xs text-gray-400 mt-0.5">o arrastra y suelta aquí</span>
+                                    <input id="logo" name="logo" type="file"
+                                           accept="image/jpg,image/jpeg,image/png,image/webp"
+                                           class="hidden"
+                                           @change="handleLogo($event)">
+                                </label>
+                            </div>
+                        </div>
+                        @error('logo')
+                            <p class="mt-2 flex items-center gap-1.5 text-sm text-red-600">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
 
                     {{-- Nombre --}}
                     <div>
@@ -351,8 +400,9 @@
                             {{-- Card body --}}
                             <div class="p-4">
                                 <div class="flex items-start gap-3 mb-3">
-                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-base shadow-md shrink-0 transition-all duration-300"
-                                         x-text="name ? name.charAt(0).toUpperCase() : '?'">
+                                    <div class="w-10 h-10 rounded-xl overflow-hidden shadow-md shrink-0 transition-all duration-300 bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center">
+                                        <img x-show="logoUrl" :src="logoUrl" alt="Logo" class="w-full h-full object-cover">
+                                        <span x-show="!logoUrl" class="text-white font-black text-base" x-text="name ? name.charAt(0).toUpperCase() : '?'"></span>
                                     </div>
                                     <div class="min-w-0 flex-1">
                                         <h4 class="font-bold text-gray-900 text-sm leading-tight truncate transition-all duration-200"
