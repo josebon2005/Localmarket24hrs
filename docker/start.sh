@@ -11,7 +11,7 @@ cd /var/www/html
 # Run migrations
 php artisan migrate --force
 
-# Create storage symlink (public/storage → storage/app/public)
+# Create storage symlink
 php artisan storage:link --force 2>/dev/null || true
 
 # Cache config/routes/views for performance
@@ -19,9 +19,8 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Inject $PORT into nginx config
-envsubst '${PORT}' < /etc/nginx/http.d/default.conf.template \
-    > /etc/nginx/http.d/default.conf
+# Inject $PORT into nginx config and write it as the active config
+envsubst '${PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
 # Hand off to supervisor (manages both php-fpm and nginx)
 exec supervisord -c /etc/supervisord.conf

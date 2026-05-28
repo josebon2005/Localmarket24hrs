@@ -43,7 +43,7 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
-# ── Node dependencies (cached layer) ─────────────────────────────────────────
+# ── Node dependencies + build assets (cached layer) ──────────────────────────
 COPY package.json package-lock.json ./
 RUN npm ci
 
@@ -53,9 +53,6 @@ COPY . .
 # ── Build front-end assets ────────────────────────────────────────────────────
 RUN npm run build
 
-# ── Run post-install composer scripts ────────────────────────────────────────
-RUN composer run-script post-autoload-dump
-
 # ── Permissions ───────────────────────────────────────────────────────────────
 RUN chown -R www-data:www-data \
         /var/www/html/storage \
@@ -64,8 +61,8 @@ RUN chown -R www-data:www-data \
     && chmod -R 775 /var/www/html/storage \
     && chmod -R 775 /var/www/html/bootstrap/cache
 
-# ── Docker config files ────────────────────────────────────────────────────────
-COPY docker/nginx.conf      /etc/nginx/http.d/default.conf.template
+# ── Nginx config (template — PORT gets injected at runtime) ───────────────────
+COPY docker/nginx.conf      /etc/nginx/nginx.conf.template
 COPY docker/supervisord.conf /etc/supervisord.conf
 COPY docker/start.sh        /start.sh
 RUN chmod +x /start.sh
