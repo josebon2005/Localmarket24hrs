@@ -12,6 +12,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
+        'commerce_id',
         'name',
         'email',
         'password',
@@ -35,6 +36,11 @@ class User extends Authenticatable
     public function commerce()
     {
         return $this->hasOne(Commerce::class);
+    }
+
+    public function repartidorCommerce()
+    {
+        return $this->belongsTo(Commerce::class, 'commerce_id');
     }
 
     public function cart()

@@ -46,6 +46,11 @@ class Commerce extends Model
         return $this->hasMany(Conversation::class);
     }
 
+    public function repartidores()
+    {
+        return $this->hasMany(User::class)->where('role', 'repartidor');
+    }
+
     public function isActivo(): bool
     {
         return $this->status === 'activo';

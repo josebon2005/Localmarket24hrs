@@ -67,9 +67,24 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                         Mis pedidos
                     </a>
-                    <a href="{{ route('marketplace.cart.index') }}" class="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold text-orange-600 bg-orange-50 hover:bg-orange-100 transition-colors">
+                    <a href="{{ route('marketplace.conversations.index') }}" class="relative p-2.5 rounded-xl text-gray-500 hover:text-orange-500 hover:bg-orange-50 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                        @if(!empty($unreadBuyerChats) && $unreadBuyerChats > 0)
+                            <span class="absolute -top-1.5 -right-1.5 flex">
+                                <span class="animate-ping absolute inline-flex h-3.5 w-3.5 rounded-full bg-orange-400 opacity-75"></span>
+                                <span class="relative min-w-[14px] h-3.5 px-0.5 rounded-full bg-orange-500 text-white text-[9px] font-bold flex items-center justify-center leading-none ring-2 ring-white">{{ $unreadBuyerChats > 9 ? '9+' : $unreadBuyerChats }}</span>
+                            </span>
+                        @endif
+                    </a>
+                    <a href="{{ route('marketplace.cart.index') }}" class="relative flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold text-orange-600 bg-orange-50 hover:bg-orange-100 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                         Carrito
+                        @if(!empty($cartItemCount) && $cartItemCount > 0)
+                            <span class="absolute -top-1 -right-1 flex">
+                                <span class="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-orange-400 opacity-75"></span>
+                                <span class="relative min-w-[16px] h-4 px-0.5 rounded-full bg-orange-500 text-white text-[9px] font-bold flex items-center justify-center leading-none ring-2 ring-white">{{ $cartItemCount > 9 ? '9+' : $cartItemCount }}</span>
+                            </span>
+                        @endif
                     </a>
                     <div class="relative" x-data="{ userMenu: false }">
                         <button @click="userMenu = !userMenu" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-gray-200 hover:border-orange-200 bg-white hover:bg-orange-50 transition-all duration-150">
@@ -84,6 +99,13 @@
                             <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                                 Mi cuenta
+                            </a>
+                            <a href="{{ route('marketplace.conversations.index') }}" class="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                Mis chats
+                                @if(!empty($unreadBuyerChats) && $unreadBuyerChats > 0)
+                                    <span class="ml-auto min-w-[18px] h-[18px] px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center leading-none">{{ $unreadBuyerChats > 9 ? '9+' : $unreadBuyerChats }}</span>
+                                @endif
                             </a>
                             <div class="border-t border-gray-100">
                                 <form method="POST" action="{{ route('logout') }}">@csrf
@@ -111,9 +133,20 @@
     </div>
     <div :class="{'block':open,'hidden':!open}" class="hidden md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1.5">
         @auth
-            <a href="{{ route('marketplace.cart.index') }}"   class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-orange-600 bg-orange-50">Carrito</a>
+            <a href="{{ route('marketplace.cart.index') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-orange-600 bg-orange-50">
+                Carrito
+                @if(!empty($cartItemCount) && $cartItemCount > 0)
+                    <span class="ml-auto min-w-[18px] h-[18px] px-1 rounded-full bg-orange-600 text-white text-[10px] font-bold flex items-center justify-center leading-none">{{ $cartItemCount > 9 ? '9+' : $cartItemCount }}</span>
+                @endif
+            </a>
             <a href="{{ route('marketplace.orders.index') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-100">Mis pedidos</a>
-            <a href="{{ route('profile.edit') }}"             class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-100">Mi cuenta</a>
+            <a href="{{ route('marketplace.conversations.index') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-100">
+                Mis chats
+                @if(!empty($unreadBuyerChats) && $unreadBuyerChats > 0)
+                    <span class="ml-auto min-w-[18px] h-[18px] px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center leading-none">{{ $unreadBuyerChats > 9 ? '9+' : $unreadBuyerChats }}</span>
+                @endif
+            </a>
+            <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-100">Mi cuenta</a>
             <form method="POST" action="{{ route('logout') }}">@csrf
                 <button type="submit" class="w-full text-left flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-red-600 hover:bg-red-50">Cerrar sesión</button>
             </form>

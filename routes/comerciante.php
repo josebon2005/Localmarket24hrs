@@ -5,6 +5,7 @@ use App\Http\Controllers\Comerciante\ConversationController;
 use App\Http\Controllers\Comerciante\CouponController;
 use App\Http\Controllers\Comerciante\OrderController;
 use App\Http\Controllers\Comerciante\ProductController;
+use App\Http\Controllers\Comerciante\RepartidorController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'active'])
@@ -13,6 +14,13 @@ Route::middleware(['auth', 'active'])
     ->group(function () {
         Route::get('/crear-comercio', [CommerceController::class, 'create'])->name('commerce.create');
         Route::post('/crear-comercio', [CommerceController::class, 'store'])->name('commerce.store');
+        Route::get('/mi-tienda/editar', [CommerceController::class, 'edit'])->name('commerce.edit');
+        Route::put('/mi-tienda', [CommerceController::class, 'update'])->name('commerce.update');
+
+        Route::get('/repartidores', [RepartidorController::class, 'index'])->name('repartidores.index');
+        Route::post('/repartidores', [RepartidorController::class, 'store'])->name('repartidores.store');
+        Route::patch('/repartidores/{user}/estado', [RepartidorController::class, 'toggleStatus'])->name('repartidores.toggle-status');
+        Route::delete('/repartidores/{user}', [RepartidorController::class, 'destroy'])->name('repartidores.destroy');
 
         Route::get('/dashboard', function () {
             return view('comerciante.dashboard');

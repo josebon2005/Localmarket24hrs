@@ -9,6 +9,8 @@ class ConversationMessage extends Model
 {
     use HasFactory;
 
+    protected $table = 'messages';
+
     protected $fillable = [
         'conversation_id',
         'sender_id',

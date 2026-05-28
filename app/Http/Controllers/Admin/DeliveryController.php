@@ -14,8 +14,16 @@ class DeliveryController extends Controller
     public function index()
     {
         $repartidores = User::where('role', 'repartidor')
-            ->latest()
-            ->paginate(10);
+            ->with('repartidorCommerce')
+            ->withCount([
+                'deliveryOrders as total_entregas',
+                'deliveryOrders as entregas_activas' => fn ($q) => $q->whereIn('status', ['confirmado', 'en_preparacion', 'en_camino']),
+            ])
+            ->orderBy('name')
+            ->get();
+
+        $total   = $repartidores->count();
+        $activos = $repartidores->where('status', 'activo')->count();
 
         $orders = Order::with(['user', 'deliveryUser'])
             ->latest()
@@ -26,7 +34,7 @@ class DeliveryController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('admin.delivery.index', compact('repartidores', 'orders', 'activeRepartidores'));
+        return view('admin.delivery.index', compact('repartidores', 'total', 'activos', 'orders', 'activeRepartidores'));
     }
 
     public function store(Request $request)
@@ -48,6 +56,29 @@ class DeliveryController extends Controller
         return redirect()
             ->route('admin.delivery.index')
             ->with('success', 'Repartidor creado correctamente.');
+    }
+
+    public function toggleStatus(User $user)
+    {
+        if ($user->role !== 'repartidor') {
+            abort(403);
+        }
+
+        $user->update(['status' => $user->status === 'activo' ? 'inactivo' : 'activo']);
+
+        return back()->with('success', 'Estado del repartidor actualizado.');
+    }
+
+    public function destroy(User $user)
+    {
+        if ($user->role !== 'repartidor') {
+            abort(403);
+        }
+
+        $user->deliveryOrders()->update(['delivery_user_id' => null]);
+        $user->delete();
+
+        return back()->with('success', 'Repartidor eliminado correctamente.');
     }
 
     public function assign(Request $request, Order $order)

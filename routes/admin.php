@@ -37,6 +37,8 @@ Route::middleware(['auth', 'active', 'admin'])
 
         Route::get('/repartidores', [DeliveryController::class, 'index'])->name('delivery.index');
         Route::post('/repartidores', [DeliveryController::class, 'store'])->name('delivery.store');
+        Route::patch('/repartidores/{user}/estado', [DeliveryController::class, 'toggleStatus'])->name('delivery.toggle-status');
+        Route::delete('/repartidores/{user}', [DeliveryController::class, 'destroy'])->name('delivery.destroy');
         Route::patch('/pedidos/{order}/repartidor', [DeliveryController::class, 'assign'])->name('delivery.assign');
 
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
